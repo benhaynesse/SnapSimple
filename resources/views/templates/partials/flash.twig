@@ -1,0 +1,13 @@
+{# Get Global Messages #}
+{% set key = flash.getMessages() | keys | first %}
+
+{# Only Display Alert Box if there is messages #}
+{%  if key is not empty  %}
+
+{# Display for message Box #}
+<div class="alert alert-{{key}}">
+        <a href="#" class="close" aria-label="close">&times;</a>
+        {{flash.getMessage(key)| first}}            
+</div> 
+
+{%  endif  %}
