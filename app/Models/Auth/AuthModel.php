@@ -12,8 +12,10 @@ class AuthModel{
         return 5;
     }
 
-    public function check(){
+    public function check(){ 
+        return false;       
         return isset($_SESSION['user']);
+        
     }
 
     public function attempt($email, $password){
