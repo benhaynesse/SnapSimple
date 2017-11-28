@@ -5,15 +5,26 @@
 $app->get('/', 'HomeController:index')->setName('home');
 
 
-//Sign In Route
-$app->get('/auth/signin', 'AuthenticationController:getSignIn')->setName('auth.signin');
+//Route Grop For Unauthenticated Users Only
+$app->group('', function () {    
+    
+    //Sign In Route
+    $this->get('/auth/signin', 'AuthenticationController:getSignIn')->setName('auth.signin');
 
-//Register Routes
-$app->get('/auth/register', 'AuthenticationController:getRegisterUser')->setName('auth.register');
-$app->post('/auth/register', 'AuthenticationController:postRegisterUser');
+    //Register Routes
+    $this->get('/auth/register', 'AuthenticationController:getRegisterUser')->setName('auth.register');
+    $this->post('/auth/register', 'AuthenticationController:postRegisterUser');
 
-//Logout Route
-$app->get('/auth/logout', 'AuthenticationController:logout')->setName('auth.logout');
+})->add(new \App\Middleware\GuestMiddleware($container));
+
+
+//Route Groups For Authenticated Users Only
+$app->group('', function () {
+
+    $this->get('/auth/logout', 'AuthenticationController:logout')->setName('auth.logout');
+
+
+})->add(new \App\Middleware\AuthMiddleware($container));
 
 
 
