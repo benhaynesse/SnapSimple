@@ -82,6 +82,10 @@ $container['HomeController'] = function($container){
     return new \App\Controllers\HomeController($container);
 };
 
+$container['AuthenticationController'] = function($container){
+    return new \App\Controllers\Auth\AuthenticationController($container);
+};
+
 
 $container['csrf'] = function(){
     return new \Slim\Csrf\Guard;

@@ -1,13 +1,23 @@
-{% extends 'templates/app.twig' %}
-
-{# Override For App.twig #}
-{% block content %}
-
-{# Title Display #}
+{% extends 'templates/app.twig' %} {# Override For App.twig #} {% block content %} {# Title Display #}
 
 <h2 class="text-center">Index Page</h2>
 
 
+<!-- <div class="container">
+    <div class="row align-items-center">
+
+        {% for user in users %} {% include 'templates/profiles/grid-profile.twig' with {'user' : user} %} {% endfor %}
+
+    </div>
+</div>  -->
 
 
+<script>
+
+    if (window.location.hash == '#_=_') {
+        window.location.hash = ''; // for older browsers, leaves a # behind
+        history.pushState('', document.title, window.location.pathname); // nice and clean        
+    }
+
+</script>
 {% endblock %}

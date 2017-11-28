@@ -1,0 +1,57 @@
+/* Resets */
+a:link {
+    text-decoration: inherit;
+    color: inherit;
+    cursor: auto;
+}
+
+a:visited {
+    text-decoration: inherit;
+    color: inherit;
+    cursor: auto;
+}
+
+
+/* Style for navbar search form */
+
+.navbar-search-container {
+    display: flex;
+}
+
+.navbar-search-container .navbar-form {
+    flex: 1;
+}
+
+.navbar-search-container .navbar-form .input-group {
+    width: 100%;
+}
+
+
+/* End Style For Navbar Search Form  */
+
+
+/* Styling for profile grid */
+
+.profile-grid {
+    margin-top: 30px;
+    box-sizing: border-box;
+}
+
+.profile {
+    margin-bottom: 15px;
+    box-sizing: border-box;
+    border-bottom: 1px solid #db711057;
+}
+
+.fixed-image {
+    height: 300px;
+    padding: 15px;
+}
+
+.fixed-image img {
+    margin: auto;
+    height: 100%;
+}
+
+
+/* End of styling for profile grid */

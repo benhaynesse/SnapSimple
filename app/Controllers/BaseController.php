@@ -19,6 +19,7 @@ class BaseController{
             return $this->container->{$property};
         }else{
             echo "Not a valid property in the Base Controller";
+            die();
         }
 
        
