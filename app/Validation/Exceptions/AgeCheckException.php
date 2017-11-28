@@ -4,11 +4,11 @@ namespace App\Validation\Exceptions;
 
 use Respect\Validation\Exceptions\ValidationException;
 
-class EmailAvailableException extends ValidationException{
+class AgeCheckException extends ValidationException{
 
     public static $defaultTemplates = [
         self::MODE_DEFAULT => [
-            self::STANDARD => 'Email is already in use',
+            self::STANDARD => 'Incorrect Age, You must be over 18',
         ],
     ];
 

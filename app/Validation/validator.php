@@ -31,6 +31,10 @@ class Validator
         return $this;
     }
 
+    public function getErrors(){
+        return $this->errors;
+    }
+
     public function failed(){
         return !empty($this->errors);
     }

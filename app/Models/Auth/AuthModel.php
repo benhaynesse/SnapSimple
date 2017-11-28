@@ -2,6 +2,7 @@
 
 namespace App\Models\Auth;
 
+use App\DBOs\User;
 
 
 
@@ -9,16 +10,24 @@ class AuthModel{
 
     public function user(){
         $user = isset($_SESSION['user']) ? $_SESSION['user'] : null;
-        return 5;
+        return User::find($user);
     }
 
-    public function check(){
-        return isset($_SESSION['user']);
+    public function check(){              
+        return isset($_SESSION['user']);   
     }
 
-    public function attempt($email, $password){
+    public function attempt($id){
 
-        return true;
+
+        $user = User::where('facebook_id', $id)->first();
+        
+        if(!$user){
+            return false;
+        }
+        
+        $_SESSION['user'] = $user->id;
+        return true;                
 
     }
 
