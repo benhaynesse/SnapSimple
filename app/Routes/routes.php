@@ -1,8 +1,15 @@
 <?php
 
+//Test Route used for debugging templates
+$app->get('/test', function($request, $response){
+    return $this->view->render($response, 'post/components/imagepreview.twig');
+});
 
 //First Route
 $app->get('/', 'HomeController:index')->setName('home');
+
+
+
 
 
 //Route Grop For Unauthenticated Users Only
@@ -22,6 +29,10 @@ $app->group('', function () {
 $app->group('', function () {
 
     $this->get('/auth/logout', 'AuthenticationController:logout')->setName('auth.logout');
+    
+    //Add Post Form
+    $this->get('/post/add', 'PostController:getAddPost')->setName('post.add');
+    $this->post('/post/add', 'PostController:postAddPost');
 
 
 })->add(new \App\Middleware\AuthMiddleware($container));

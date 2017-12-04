@@ -1,0 +1,105 @@
+
+<style>
+    #map {
+        height: 300px;
+    }
+</style>
+
+
+<label for="location">Location
+    <small>(e.g London, UK)</small>
+</label>
+
+<div class="input-group">
+    <input type="text" class="form-control" placeholder="e.g London, UK" id="location">
+    <div class="input-group-btn">
+        <button class="btn btn-default" type="button" id="findlocation">
+            <i class="glyphicon glyphicon-search"></i>
+        </button>
+    </div>
+</div>
+
+<div id="map"></div>
+
+<input type="hidden" name="lat" id="lat">
+<input type="hidden" name="long" id="long">
+
+
+
+<script src="{{ base_url() }}/js/map.js"></script>
+
+<script>
+    var m;
+    function initMap() {
+        
+        //Cache and return DOM object of map
+        let map = $('#map')[0];
+
+        // Try HTML5 geolocation.
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function (position) {
+                var pos = {
+                    lat: position.coords.latitude += generateRandomNumber(),
+                    lng: position.coords.longitude += generateRandomNumber()
+                };
+
+                m = new Map(map,pos);
+                m.addMarker(pos)
+                //$('#location').val(m.getLocationName(pos))
+                                
+
+                m.getLocationName(pos)
+                    .then(location => {
+                        updateLocation(location);
+                    })
+                
+                updateCoordinates(pos)
+
+            }, function () {
+                m = new Map(map);
+            });
+        } else {
+            // Browser doesn't support Geolocation
+            m = new Map(map);
+        }
+    }
+
+    function updateLocation(location){
+        $('#location').val(location.city + ', ' + location.country);
+    }
+
+    function updateCoordinates(pos) {
+        $('#lat').val(pos.lat);
+        $('#long').val(pos.lng)
+    }
+
+
+    function generateRandomNumber() {
+        var min = -0.0200,
+            max = 0.020,
+            highlightedNumber = Math.random() * (max - min) + min;
+
+        return highlightedNumber;
+    };
+
+
+    $('#findlocation').click(function () {
+
+        let term = $('#location').val();
+        $.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${term}&key=AIzaSyD-YK6e1TddT7Fibz6QvQUquFdNAsvOJuo`, function (data) {
+            let pos = data.results[0].geometry.location
+            m.addMarker(pos);
+            updateCoordinates(pos)
+        })
+    });
+
+    
+
+
+
+</script>
+
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-YK6e1TddT7Fibz6QvQUquFdNAsvOJuo&callback=initMap">
+</script> 
+
+

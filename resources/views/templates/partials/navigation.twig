@@ -37,7 +37,7 @@
     <!-- Right Aligned Items -->
     <ul class="nav navbar-nav navbar-right">
       <!-- Drop Down List -->
-
+      <li><a href="{{ path_for('post.add') }}">Add Post</a></li>
       {# If user logged in show user options #}
       {% if auth.check %}
       <li class="dropdown">

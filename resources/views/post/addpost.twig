@@ -1,0 +1,76 @@
+{% extends 'templates/app.twig' %} {% block content %}
+
+
+<!-- <div class="row text-center">
+    <h4>Add Your Post!</h4>
+</div> -->
+
+
+<div class="row">
+    <div class="col-md-12">
+
+        <div class="panel panel-info">
+            <div class="panel-heading">Add Post</div>
+            <div class="panel-body">
+                
+                <form action={{path_for('post.add')}} method="POST"  enctype="multipart/form-data">
+
+                    <div class="form-group {{errors.headline ? 'has-error'}}">
+                        <label for="headline">Headline</label>
+                        <input class="form-control" type="text" name="headline" id="headline" placeholder="Enter Your Post Title">
+                        {% if errors.headline %}
+                        <span class="help-block">{{errors.headline | first}}</span>
+                        {% endif %}
+                    </div>
+
+
+                    <div class="form-group {{errors.image ? 'has-error'}}">
+                        {% include 'post/components/imagepreview.twig' %}
+                    </div>
+                     
+
+                    <div class="form-group">
+                        <label for="looking">What are you looking for?</label>
+                        <select class="form-control" id="looking" name="looking">
+                            <option value="1">Followers</option>
+                            <option value="2">Chats</option>
+                            <option value="3">Fun</option>
+                            <option value="4">Selling</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="comments">Who can comment on your post</label>
+                        <select class="form-control" id="comments" name="comments">
+                            <option value="1">Only Members</option>
+                            <option value="2">Anyone</option>
+                            <option value="3">Noone</option>
+                        </select>
+                    </div>                   
+
+                    <!-- Include Map Along with its js -->
+                    <div class="form-group">
+                        {% include 'post/components/map.twig' %}
+                    </div>
+
+                    <button type="submit" class="btn btn-info btn-block">Add Post</button>
+
+                </form>
+                <!--End Of Form -->
+
+            </div>
+            <!-- End of panel body -->
+        </div>
+        <!-- End of Panel -->
+
+
+    </div>
+    <!-- End of sizing container -->
+</div>
+<!-- End of Row -->
+
+
+
+
+
+{% endblock %}

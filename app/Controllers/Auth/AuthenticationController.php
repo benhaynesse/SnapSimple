@@ -59,6 +59,8 @@ class AuthenticationController extends BaseController
            //User Attemp Login
             $this->auth->attempt($fbUserProfile->getField('id'));
 
+            $this->flash->addMessage('info', "Successful Sign In!");
+
             //Go back to index page
             return $response->withRedirect($this->router->pathFor('home'));   
         
@@ -106,12 +108,12 @@ class AuthenticationController extends BaseController
             $email = $fbUserProfile->getField('email');
             $estimatedAge = $fbUserProfile->getField('age_range')['min'] ?? $fbUserProfile->getField('age_range')['max'];
 
-            $friendCount = $fbUserProfile->getField('friends')->getTotalCount();
+            // $friendCount = $fbUserProfile->getField('friends')->getTotalCount();
 
-            if ($friendCount < 50) {
-                $this->flash->addMessage('danger', 'Sorry Your Profile looks like a spam account!');
-                return $response->withRedirect($this->router->pathFor('home'));
-            }
+            // if ($friendCount < 50) {
+            //     $this->flash->addMessage('danger', 'Sorry Your Profile looks like a spam account!');
+            //     return $response->withRedirect($this->router->pathFor('home'));
+            // }
 
 
             return $this->view->render($response, 'auth/register.twig', [
@@ -128,10 +130,8 @@ class AuthenticationController extends BaseController
 
 
     public function postRegisterUser(ServerRequestInterface $request, ResponseInterface $response)
-    {
-                
+    {               
         
-
         $validation = $this->validator->validate($request, [
             'name' => v::notEmpty()->alnum('-'),
             'facebook_id' => v::noWhitespace()->notEmpty()->facebookidavailable(),             
@@ -158,6 +158,11 @@ class AuthenticationController extends BaseController
             'age' => $request->getParam('age'),
             'facebook_id' => $request->getParam('facebook_id'),
         ]);
+
+        if(!$post){
+            $this->flash->addMessage('danger', "Something went wrong with your request");
+            return $response->withRedirect($this->router->pathFor('home'));  
+        }
 
         $this->flash->addMessage('info', 'You have signed up!');
 
