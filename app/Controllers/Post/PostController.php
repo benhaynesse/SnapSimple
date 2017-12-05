@@ -21,7 +21,7 @@ class PostController extends BaseController
   
 
     public function getAddPost(ServerRequestInterface $request, ResponseInterface $response)
-    {
+    {        
         return $this->view->render($response, 'post/addpost.twig');
         
     }
@@ -87,7 +87,6 @@ class PostController extends BaseController
 
         $this->flash->addMessage('info', "Post Added Successfully");
         return $response->withRedirect($this->router->pathFor('home'));  
-
         
     }
     

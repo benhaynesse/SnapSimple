@@ -11,7 +11,6 @@ $app->get('/', 'HomeController:index')->setName('home');
 
 
 
-
 //Route Grop For Unauthenticated Users Only
 $app->group('', function () {    
     

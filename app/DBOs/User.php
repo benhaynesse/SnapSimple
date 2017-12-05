@@ -17,6 +17,10 @@ class User extends Model{
         'facebook_id'
     ];
 
+    public function post(){
+        return $this->hasMany('App\DBOs\Post');
+    }
+
     
 
 }
