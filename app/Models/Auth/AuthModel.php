@@ -19,7 +19,6 @@ class AuthModel{
 
     public function attempt($id){
 
-
         $user = User::where('facebook_id', $id)->first();
         
         if(!$user){

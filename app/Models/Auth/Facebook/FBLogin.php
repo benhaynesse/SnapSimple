@@ -64,9 +64,6 @@ class FBLogin{
               exit;
         }
 
-        
-        
-
         return $accessToken;
     }
 

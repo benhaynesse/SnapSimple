@@ -1,0 +1,89 @@
+<div class="animated-arrow" id="animated-arrow">
+    <span class="arrow"></span>
+</div>
+
+<script>
+
+    $('.animated-arrow').click(function () {
+        $(this).toggleClass('active');
+    })
+
+</script>
+
+<style>
+    .animated-arrow {
+        border-radius: 4px;
+        padding: 12px 22px 4px 10px;
+        background: #424242;
+        box-sizing: border-box;
+        float: right;
+
+        display: block;
+        text-align: center;
+        -webkit-transition: 0.15s ease;
+        transition: 0.15s ease;
+        margin: 12px;
+    }
+
+    .animated-arrow.active .arrow {
+        -webkit-transform: rotate(45deg) translate(-5px, -5px);
+        transform: rotate(45deg) translate(-5px, -5px);
+    }
+
+    .animated-arrow.active .arrow:before {
+        -webkit-transform: translate(10px, 0);
+        transform: rotate(-90deg) translate(-5px, 5px);
+    }
+
+    .animated-arrow .arrow:after {
+        -webkit-transform: rotate(90deg);
+        transform: rotate(90deg);
+    }
+
+    .animated-arrow.active .arrow:after {
+        -webkit-transform: translate(5px, 5px);
+        transform: translate(5px, 5px);
+
+    }
+
+    .animated-arrow.active ul {
+        opacity: 0.3;
+        height: 108px;
+    }
+
+    .arrow {
+        width: 13px;
+        height: 13px;
+        display: inline-block;
+
+        -webkit-transition: 0.4s ease;
+        transition: 0.4s ease;
+        margin-top: 2px;
+        text-align: left;
+        -webkit-transform: rotate(45deg);
+        transform: rotate(45deg);
+
+    }
+
+    .arrow:before,
+    .arrow:after {
+        position: absolute;
+        content: "";
+        display: inline-block;
+        width: 12px;
+        height: 3px;
+        background-color: #fff;
+        -webkit-transition: 0.4s ease;
+        transition: 0.4s ease;
+    }
+
+    .arrow:after {
+        position: absolute;
+        /*   -webkit-transform: rotate(90deg);
+                    transform: rotate(90deg); */
+        top: -5px;
+        left: 5px;
+    }
+
+    
+</style>

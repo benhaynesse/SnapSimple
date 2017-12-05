@@ -1,0 +1,56 @@
+
+
+<style>    
+        
+            .preview-image{    
+                width:100%;                     
+            }
+        
+            .preview-image img{        
+                margin:auto;
+            }                      
+
+
+        </style>
+
+<label for="image">Add a pic</label>
+<input class="form-control" type="file" name="image" id="image">
+{% if errors.image %}
+<span class="help-block">{{errors.image | first}}</span>
+{% endif %}
+
+<div class="preview-image">
+    <div id="closeImage">
+        {% include 'templates/partials/arrow.twig' %}
+    </div>
+        <!-- <span id="closeImage">&times;</span> -->
+        <div class="hideable">
+            <img class="img-responsive" id="blah" src="#" />
+        </div>
+</div> 
+
+
+<script>
+        function readURL(input) {
+            
+              if (input.files && input.files[0]) {
+                var reader = new FileReader();
+            
+                reader.onload = function(e) {
+                  $('#blah').attr('src', e.target.result);       
+                  $('#blah').height(300);                 
+                }
+            
+                reader.readAsDataURL(input.files[0]);
+              }
+            }
+            
+            $("#image").change(function() {
+              readURL(this);
+        });
+
+        $('#closeImage').click(function(){
+            $('.hideable').slideToggle();                   
+        });
+</script>
+

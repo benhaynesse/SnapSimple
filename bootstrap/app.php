@@ -35,6 +35,9 @@ $capsule->addConnection($container['settings']['db']);
 $capsule->setAsGlobal();
 $capsule->bootEloquent();
 
+//Set up where images are uploaded 
+$container['upload_directory'] = __DIR__ . '/../public/uploads';
+
 //Set up access to Illuminate
 $container['db'] = function($container) use ($capsule){
     return $capsule;
@@ -80,6 +83,10 @@ $container['validator'] = function($container){
 
 $container['HomeController'] = function($container){
     return new \App\Controllers\HomeController($container);
+};
+
+$container['PostController'] = function($container){
+    return new \App\Controllers\Post\PostController($container);
 };
 
 $container['AuthenticationController'] = function($container){
