@@ -8,6 +8,8 @@ use Psr\Http\Message\ResponseInterface;
 
 use App\Models\FileUpload\ImageUpload;
 
+use App\Models\FileUpload\BImage;
+
 use App\DBOs\Post;
 
 
@@ -20,23 +22,26 @@ class PostController extends BaseController
 {
   
 
+
     public function getAddPost(ServerRequestInterface $request, ResponseInterface $response)
     {
         return $this->view->render($response, 'post/addpost.twig');
-        
+
     }
 
-    public function postAddPost(ServerRequestInterface $request, ResponseInterface $response){
-
-              
+    public function postAddPost(ServerRequestInterface $request, ResponseInterface $response)
+    {       
+         
+        
         //Validate Post Data
         $validation = $this->validator->validate($request, [
-            'headline' => v::notEmpty()->alnum(),  
-            'looking' => v::notEmpty()->intVal(),
-            'comments' => v::notEmpty()->intVal(),
-            'lat' => v::optional(v::numeric()),
-            'long' => v::optional(v::numeric()),
-        ]);
+            'username' => V::notEmpty()->validUsername(),
+            'headline' => V::notEmpty()->alnum('!:)('),
+            'looking' => V::notEmpty()->intVal(),
+            'comments' => V::notEmpty()->intVal(),
+            'lat' => V::optional(v::numeric()),
+            'long' => V::optional(v::numeric()),
+        ]);        
         
         //Validate Image
         $validation->validateImage($request, [
@@ -44,70 +49,81 @@ class PostController extends BaseController
         ]);
 
         //If any validation fails set errors and return back to post form
-        if($validation->failed()){  
+        if ($validation->failed()) {
             $this->flash->addMessage('danger', "Please Correct Errors Below");
-            return $response->withRedirect($this->router->pathFor('post.add'));            
-        }
-        
+            return $response->withRedirect($this->router->pathFor('post.add'));
+        }     
+
+        $dim = json_decode($request->getParam('dim'));
 
         //Attempt to upload image. If something fails return to post form
-        $filename = $this->uploadImage($request->getUploadedFiles()['image']);
+        $filename = $this->handleImage($request->getUploadedFiles()['image'],$dim);
 
-        if(!$filename){
+        if (!$filename) {
             $this->flash->addMessage('danger', "Error occured with your picture");
-            return $response->withRedirect($this->router->pathFor('post.add'));  
-        }
-            
-             
-
+            return $response->withRedirect($this->router->pathFor('post.add'));
+        }               
+    
         //Grab Logged In user info And Post Info
         $user_id = $this->auth->user()->id;
+        $username = $request->getParam('username');
         $headline = $request->getParam('headline');
         $looking = $request->getParam('looking');
         $comments = $request->getParam('comments');        
 
         
         //Add Location Coordinates to Database
-        $lat = $request->getParam('lat') ?: 125;
-        $long = $request->getParam('long') ?: 125;
+        $lat = $request->getParam('lat') ? : 125;
+        $long = $request->getParam('long') ? : 125;
 
         $post = Post::create([
             'headline' => $headline,
+            'username' => $username,
             'user_id' => $user_id,
-            'looking_for' =>$looking,
+            'looking_for' => $looking,
             'commenters' => $comments,
-            'image_url' => $filename,
+            'thumbnail' => 'thumbs/'.$filename,
+            'image_url' => 'images/'.$filename,
             'latitude' => $lat,
             'longitude' => $long,
         ]);
 
-        if(!$post){
+        if (!$post) {
             $this->flash->addMessage('danger', "Something went wrong with your request");
         }
 
         $this->flash->addMessage('info', "Post Added Successfully");
-        return $response->withRedirect($this->router->pathFor('home'));  
+        return $response->withRedirect($this->router->pathFor('home'));
+    }
 
+    private function handleImage($image, $dim){
+        $bImage = new BImage($image);
+        $imagename = $bImage->getFilename();
+        $thumbnail = $bImage->getThumbnail($dim);
+        $image = $bImage->getImage();
+
+        $res = $this->uploadImage('images', $imagename, $image);
+        $res = $this->uploadImage('thumbs', $imagename, $thumbnail);
+
+        if(!$res){
+            return false;
+        }
+
+        return $imagename;
         
     }
-    
 
-    private function uploadImage($image){
 
-        $directory = $this->upload_directory;   
+    private function uploadImage($folder, $filename, $image){
+        
+        $directory = $this->upload_directory;
 
-        $uploadedFile = $image;
-        if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
-            $filename = ImageUpload::moveUploadedFile($directory, $uploadedFile);
-            
-            return $filename;
-        }else{
-            return false;
-        }        
-
+        $path = $directory . DIRECTORY_SEPARATOR . $folder . DIRECTORY_SEPARATOR . $filename;
+        return $image->save($path);
+        
     }
 
 
-    
+
 
 }

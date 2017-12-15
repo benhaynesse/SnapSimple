@@ -12,7 +12,9 @@ class Post extends Model{
     //Needed for put and post requests. Otherwise Illuminate will reject
     protected $fillable = [
         'headline',
-        'user_id',        
+        'username',
+        'user_id', 
+        'thumbnail',       
         'image_url',
         'looking_for',
         'commenters',

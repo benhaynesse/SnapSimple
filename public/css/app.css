@@ -1,4 +1,5 @@
 /* Resets */
+
 a:link {
     text-decoration: inherit;
     color: inherit;
@@ -13,6 +14,9 @@ a:visited {
 
 
 /* Style for navbar search form */
+.navbar{
+    margin-bottom:0;
+}
 
 .navbar-search-container {
     display: flex;

@@ -4,18 +4,24 @@ namespace App\Models\FileUpload;
 
 use Slim\Http\UploadedFile;
 
+use BImage;
+
 class ImageUpload{
 
+    
 
-    public static function moveUploadedFile($directory, UploadedFile $uploadedFile)
-    {
-        $extension = pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION);
-        $basename = bin2hex(random_bytes(8)); // see http://php.net/manual/en/function.random-bytes.php
-        $filename = sprintf('%s.%0.8s', $basename, $extension);
-    
-        $uploadedFile->moveTo($directory . DIRECTORY_SEPARATOR . $filename);
-    
-        return $filename;
+    public static function upload_image($directory, $filename, UploadedFile $file){
+        $location = $directory . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . $filename;
+        $file->moveTo($location);
     }
+
+    public static function upload_thumbnail($directory, $filename, $image){
+        $location = $directory . DIRECTORY_SEPARATOR . 'thumbs' . DIRECTORY_SEPARATOR . $filename;
+        $image->save($location);
+        
+    }
+
+
+    
 
 }

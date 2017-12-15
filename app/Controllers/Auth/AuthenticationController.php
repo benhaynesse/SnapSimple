@@ -99,12 +99,13 @@ class AuthenticationController extends BaseController
             ]);
         } else {
 
-            $fbUserProfile = $this->fb->getProfileDetails(['id', 'first_name', 'last_name', 'friends', 'email', 'age_range','picture'], $_SESSION['facebook_access_token']);
+            $fbUserProfile = $this->fb->getProfileDetails(['id', 'first_name', 'last_name', 'friends', 'email', 'age_range','picture', 'gender'], $_SESSION['facebook_access_token']);
            
 
             $id = $fbUserProfile->getField('id');
             $first_name = $fbUserProfile->getField('first_name');
             $last_name = $fbUserProfile->getField('last_name');
+            $gender = $fbUserProfile->getField('gender');
             $email = $fbUserProfile->getField('email');
             $estimatedAge = $fbUserProfile->getField('age_range')['min'] ?? $fbUserProfile->getField('age_range')['max'];
 
@@ -120,6 +121,7 @@ class AuthenticationController extends BaseController
                 'fullname' => $first_name . ' ' . $last_name,
                 'profile' => $fbUserProfile,
                 'age' => $estimatedAge,
+                'gender' => $gender,
             ]);
 
 
@@ -132,9 +134,11 @@ class AuthenticationController extends BaseController
     public function postRegisterUser(ServerRequestInterface $request, ResponseInterface $response)
     {               
         
+              
         $validation = $this->validator->validate($request, [
             'name' => v::notEmpty()->alnum('-'),
-            'facebook_id' => v::noWhitespace()->notEmpty()->facebookidavailable(),             
+            'facebook_id' => v::noWhitespace()->notEmpty()->facebookidavailable(),  
+            'gender' => v::notEmpty()->alpha()->checkgender(),           
             'age' => v::noWhitespace()->notEmpty()->numeric()->agecheck(),
         ]);
 
@@ -155,6 +159,7 @@ class AuthenticationController extends BaseController
         $user = UserModel::create([
             'name' => $request->getParam('name'),
             'email' => $request->getParam('email'),
+            'gender' => $request->getParam('gender'),
             'age' => $request->getParam('age'),
             'facebook_id' => $request->getParam('facebook_id'),
         ]);
