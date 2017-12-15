@@ -1,0 +1,96 @@
+<link rel="stylesheet" href="{{ base_url() }}/css/dep/croppie.css">
+
+
+
+<script src="{{ base_url() }}/js/dep/croppie.js"></script>
+
+
+<style>
+    
+    #closeImage{
+        width:100%;
+        height:36px;      
+    }
+    
+</style>
+
+
+
+
+<input type="hidden" id="dim" name="dim">
+
+<label for="image">Add a pic</label>
+<input class="form-control" type="file" name="image" id="upload">
+
+<div class="image-preview">
+    <div id="closeImage">
+        {% include 'templates/partials/arrow.twig' %}
+    </div>
+    <!-- <span id="closeImage">&times;</span> -->
+    <div class="hideable">
+            <div id="upload-demo"></div>
+    </div>
+</div>
+
+
+
+<script>
+
+        $('#closeImage').click(function(){
+            $('.hideable').slideToggle();                   
+        });
+
+    //Initialise Croppise. Dont show zoom bar set bounday and viewport.
+    $uploadCrop = $('#upload-demo').croppie({
+        
+                enableExif: true,
+                enableOrientation: true,
+                showZoomer: true,               
+        
+                viewport: {
+                    width: 300,
+                    height: 300,
+                },
+                boundary: {
+                    width: 300,
+                    height: 300
+                }
+        
+            });
+
+            
+        
+                    
+            //On Change of the view of the image. Update hidden values on form.
+            $uploadCrop.on('update', function(data){
+                let c = $uploadCrop.croppie('get').points; 
+                console.log(c);    
+                let dimensions = `{"x":${c[0]}, "y":${c[1]}, "w":${c[2]-c[0]}, "h":${c[3]-c[1]}}`;
+                $('#dim').val(dimensions);
+        
+            });  
+        
+            //On Image Change
+            $('#upload').on('change', function () {
+        
+                var reader = new FileReader();
+        
+                reader.onload = function (e) {
+                  
+                    
+                    //Add the image to croppie container when the user chooses one.
+                    $uploadCrop.croppie('bind', {
+                        url: e.target.result, 
+                        zoom: 0.3
+                    });
+
+                   
+        
+                     
+                    
+                }
+                reader.readAsDataURL(this.files[0]);
+        
+            });
+
+</script>

@@ -12,7 +12,8 @@ class User extends Model{
     //Needed for put and post requests. Otherwise Illuminate will reject
     protected $fillable = [
         'name',
-        'email',        
+        'email',    
+        'gender',    
         'age',
         'facebook_id'
     ];

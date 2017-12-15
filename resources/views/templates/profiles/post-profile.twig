@@ -1,0 +1,65 @@
+<style>
+    .thumbnail {
+        border-radius: 12px;
+    }
+
+    .thumbnail .p-image {        
+        min-height: 150px;
+    }
+
+
+    /* xs < 768 */
+
+    @media screen and (max-width: 767px) {
+        .p-username {
+            font-size: 0.9em;
+        }
+    }
+
+    /* sm */
+
+    @media screen and (min-width: 768px) {
+        .p-username {
+            font-size: 1em;
+        }
+    }
+
+    /* md */
+
+    @media screen and (min-width: 992px) {
+        .p-username {
+            font-size: 1.2em;
+        }
+    }
+
+    /* lg */
+
+    @media screen and (min-width: 1200px) {
+        .p-username {
+            font-size: 1.3em;
+        }
+    }
+</style>
+
+<div class="col-xs-6 col-md-3 profile">
+    <div class="thumbnail">
+        <img class="img-responsive img-rounded p-image" src="uploads/{{post.thumbnail}}">
+        <div class="caption">
+            <h4 class="text-center p-username">{{post.username}}</h4>
+            <p class="text-center">
+                <span>
+                    <b>24yo</b>
+                </span>
+                <span>UK</span>
+            </p>
+
+
+            <a href="#" class="btn btn-default btn pull-right" role="button">
+                <i class="glyphicon glyphicon-edit"></i>
+            </a>
+            <a href="#" class="btn btn-danger btn" role="button">
+                <span class="fa fa-heart"></span>
+            </a>
+        </div>
+    </div>
+</div>
